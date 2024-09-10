@@ -1,4 +1,4 @@
-﻿// шаблоны функций.cpp : This file contains the 'main' function. Program execution begins and ends there.
+// шаблоны функций.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
 #include <iostream>
@@ -40,27 +40,29 @@ public:
     }
 
     template <typename t>
-    void max(t max) {
+    t max(t max) {
         for (int i{}; i < size; ++i) {
             if (arr[i] > max)
                 max = arr[i];
         }
         std::cout << std::endl;
         std::cout << "Максимальное число " << max << std::endl;
+        return max;
     }
 
     template <typename t>
-    void min(t min) {
+    t min(t min) {
         for (int i{}; i < size; ++i) {
             if (min > arr[i])
                 min = arr[i];
         }
         std::cout << std::endl;
         std::cout << "Минимальное число " << min << std::endl;
+        return min;
     }
 
     template <typename t>
-    void sort(t temp) {
+    t sort(t temp) {
         for (int i{}; i < size - 1; i++) {
             for (int j{}; j < size - i - 1; j++) {
                 if (arr[j] > arr[j + 1]) {
@@ -70,13 +72,14 @@ public:
                     
                 }
             }
+            return temp;
         }
         std::cout << std::endl;
         std::cout << "Сортировка массива" << std::endl;
     }
 
     template <typename t>
-    int binarySearch(t target) {
+    t binarySearch(t target) {
         int left = 0;
         int right = size - 1;
 
@@ -134,7 +137,8 @@ int main()
     }
     else {
         std::cout << std::endl;
-        std::cout << "Элемент не найден" << std::endl;
+        std::cout << "Элемент " << target << " не найден" << std::endl;
+        std::cout << std::endl;
     }
 
     std::cout << "Замена элемента" << std::endl;
