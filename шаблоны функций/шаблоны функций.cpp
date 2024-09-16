@@ -9,17 +9,17 @@
 
 
 
-/*Нахождение минимума сделал криво*/
+/* Нахождение минимума сделал криво */
 
-
+template <typename t>
 class MyArray {
 
-    unsigned int size{};
-    int* arr{};
+    t size{};
+    t* arr{};
 
 public:
 
-    MyArray(unsigned int  s) : size{ s }, arr{ new int[size] {} } {
+    MyArray(t  s) : size{ s }, arr{ new t[size] {} } {
         std::cout << "Create aray  size =  " << size << std::endl;
     }
 
@@ -61,22 +61,17 @@ public:
         return min;
     }
 
-    template <typename t>
-    t sort(t temp) {
-        for (int i{}; i < size - 1; i++) {
-            for (int j{}; j < size - i - 1; j++) {
+    void sort() {
+        for (int i = 0; i < size - 1; ++i) {
+            for (int j = 0; j < size - i - 1; ++j) {
                 if (arr[j] > arr[j + 1]) {
-                    temp = arr[j];
-                    arr[j] = arr[j + 1];
-                    arr[j + 1] = temp;
-                    
+                    std::swap(arr[j], arr[j + 1]);
                 }
             }
-            return temp;
         }
-        std::cout << std::endl;
-        std::cout << "Сортировка массива" << std::endl;
+        std::cout << "Массив отсортирован" << std::endl;
     }
+
 
     template <typename t>
     t binarySearch(t target) {
@@ -98,7 +93,7 @@ public:
         }
 
         return -1;
-        
+
     }
 
     template <typename t>
@@ -118,17 +113,17 @@ int main()
 
     setlocale(LC_ALL, "ru");
 
-    int temp{};
     
 
-    MyArray a{ 10 };
+
+    MyArray <int> a{ 10 };
     a.gen();
     a.print();
     a.max(0);
     a.min(100000);
-    a.sort(temp);
+    a.sort();
     a.print();
-    
+
     int target = 1;
     int result = a.binarySearch(target);
 
@@ -148,14 +143,3 @@ int main()
     a.replaceElement(index, newValue);
     a.print();
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
