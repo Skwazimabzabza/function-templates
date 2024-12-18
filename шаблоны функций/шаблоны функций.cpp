@@ -2,6 +2,15 @@
 //
 
 #include <iostream>
+#include <vector>
+#include <stack>
+#include <string>
+#include <queue>
+#include <chrono>
+#include <thread>
+#include <random>
+#include <ctime>
+#include <iomanip>
 
 /*Реализуйте шаблонные функции для поиска максимума,
 минимума, сортировки массива (любым алгоритмом сортировки), двоичного поиска в массиве, замены элемента
@@ -39,26 +48,28 @@ public:
         }
     }
 
-    template <typename t>
-    t max(t max) {
+    
+    t max() {
+        t Max = arr[0];
         for (int i{}; i < size; ++i) {
-            if (arr[i] > max)
-                max = arr[i];
+            if (Max < arr[i])
+                Max = arr[i];
         }
         std::cout << std::endl;
-        std::cout << "Максимальное число " << max << std::endl;
-        return max;
+        std::cout << "Максимальное число " << Max << std::endl;
+        return Max;
     }
 
-    template <typename t>
-    t min(t min) {
+    
+    t min() {
+        t Min = arr[0];
         for (int i{}; i < size; ++i) {
-            if (min > arr[i])
-                min = arr[i];
+            if (Min > arr[i])
+                Min = arr[i];
         }
         std::cout << std::endl;
-        std::cout << "Минимальное число " << min << std::endl;
-        return min;
+        std::cout << "Минимальное число " << Min << std::endl;
+        return Min;
     }
 
     void sort() {
@@ -73,8 +84,8 @@ public:
     }
 
 
-    template <typename t>
-    t binarySearch(t target) {
+    
+    unsigned int binarySearch(t target) {
         int left = 0;
         int right = size - 1;
 
@@ -107,6 +118,8 @@ public:
     }
 };
 
+
+
 //Создайте шаблонный класс матрица. Необходимо реали
 //зовать динамическое выделение памяти, очистку памяти,
 //заполнение матрицы с клавиатуры, заполнение случайны
@@ -133,12 +146,13 @@ public:
         std::cout << std::endl;
     }
 
-     ~Matrix(){
+    ~Matrix(){
        
          delete[] arr;
         
     
     }
+
 
     void AddArray() {
         std::cout << "Введите кол-во строк" << std::endl;
@@ -216,7 +230,8 @@ public:
         return result;
     }
 
-    T max(T max) {
+    T max() {
+        T max = arr[0][0];
         for (size_t i{}; i < rows; ++i) {
             for (size_t j{}; j < cols; ++j) {
                 if (max < arr[i][j]) {
@@ -229,7 +244,8 @@ public:
         return max;
     }
 
-    T min(T min) {
+    T min() {
+        T min = arr[0][0];
         for (size_t i{}; i < rows; ++i) {
             for (size_t j{}; j < cols; ++j) {
                 if (min > arr[i][j]) {
@@ -251,6 +267,70 @@ public:
         }
             
     }
+};
+
+
+//Есть строка символов, признаком конца, которой являетcя;
+//В строке могут быть фигурные, круглые, квадратные
+//скобки.Скобки могут быть открывающими и закрыва
+//ющими.
+//Необходимо проверитькорректность расстановки скобок.
+//При этом необходимо, чтобы выполнились следующие
+//правила :
+//1. Каждая открывающая скобка должна иметь справа
+//такуюжезакрывающую.Обратноетакжедолжнобыть
+//верно.
+//2. Открывающие и закрывающие пары скобок разных
+//типов должны быть правильно расположены по от
+//ношению друг к другу.
+//■ Пример правильной строки : ({ x - y - z }*[x + 2y] - (z + 4x));
+//■ Пример неправильной строки : ([x - y - z}*[x + 2y) - {z + 4x)].
+//Если все правила соблюдены выведите информационное
+//сообщение о корректности строки, иначе покажите строку
+//до места возникновения первой ошибки
+
+
+
+bool checkParentheses(const std::string& str) {
+    std::stack<char> s;
+    for (char c : str) {
+        if (c == '(' || c == '[' || c == '{') {
+            s.push(c);
+        }
+        else if (c == ')' || c == ']' || c == '}') {
+            if (s.empty()) {
+                return false; 
+            }
+            char top = s.top();
+            s.pop();
+            if ((c == ')' && top != '(') || (c == ']' && top != '[') || (c == '}' && top != '{')) {
+                return false; 
+                
+            }
+        }
+    }
+
+    return s.empty(); 
+}
+
+struct PrintJob {
+    int clientId;
+    int priority; 
+    std::chrono::system_clock::time_point submissionTime;
+    std::chrono::system_clock::time_point completionTime;
+
+    PrintJob(int id, int p) : clientId(id), priority(p), submissionTime(std::chrono::system_clock::now()) {}
+};
+
+
+struct ComparePrintJobs {
+    bool operator()(const PrintJob& a, const PrintJob& b) const {
+        if (a.priority != b.priority) {
+            return a.priority < b.priority;
+        }
+        return a.submissionTime > b.submissionTime; 
+    }
+};
 
 int main()
 {
@@ -258,15 +338,15 @@ int main()
 
     setlocale(LC_ALL, "ru");
 
-    
 
 
-    MyArray <int> a{ 10 };
+
+    /*MyArray <int> a{ 10 };
     a.gen();
     a.print();
-    a.max(0);
-    a.min(100000);
-    a.sort();
+    a.max();
+    a.min();*/
+    /*a.sort();
     a.print();
 
     int target = 1;
@@ -286,11 +366,19 @@ int main()
     int index = 2;
     int newValue = 10;
     a.replaceElement(index, newValue);
-    a.print();
+    a.print();*/
 
 
 
-     /*Matrix <int> m(3,3);
+
+
+
+
+
+
+
+
+    /*Matrix <int> m(3,3);
     m.AddArray();
     m.GenArray();
     m.Print();*/
@@ -338,17 +426,81 @@ int main()
     Matrix <int> m12(m10 * m11);
     m12.Print();*/
 
-    
 
-    /*Matrix <int> m13(3, 3);
+
+   /* Matrix <int> m13(3, 3);
     m13.GenArray();
     m13.Print();
     Matrix <int> m14(3, 3);
     m14.GenArray();
     m14.Print();
-    m13.max(0);
-    m13.min(100000);
-    m14.max(0);
-    m14.min(100000);
-    return 0;*/
+    m13.max();
+    m13.min();
+    m14.max();
+    m14.min();*/
+
+//std::string str1 = "((()))";
+//std::string str2 = "([{}])";
+//std::string str3 = "({)}";
+//std::string str4 = "(()";
+//
+//std::cout << "\"" << str1 << "\" - balanced: " << checkParentheses(str1) << std::endl; // true
+//std::cout << "\"" << str2 << "\" - balanced: " << checkParentheses(str2) << std::endl; // true
+//std::cout << "\"" << str3 << "\" - balanced: " << checkParentheses(str3) << std::endl; // false
+//std::cout << "\"" << str4 << "\" - balanced: " << checkParentheses(str4) << std::endl; // false
+
+std::priority_queue<PrintJob, std::vector<PrintJob>, ComparePrintJobs> printQueue;
+std::vector<PrintJob> printHistory;
+std::random_device rd;
+std::mt19937 gen(rd());
+std::uniform_int_distribution<> clientIdDist(1, 100); 
+std::uniform_int_distribution<> priorityDist(0, 2);    
+
+// Имитация поступления задач на печать
+for (int i = 0; i < 10; ++i) {
+    int clientId = clientIdDist(gen);
+    int priority = priorityDist(gen);
+    PrintJob job(clientId, priority);
+    printQueue.push(job);
+    std::cout << "Задача от клиента " << clientId << " (приоритет " << priority << ") добавлена в очередь.\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(100)); 
+}
+
+
+// Имитация процесса печати
+while (!printQueue.empty()) {
+    PrintJob currentJob = printQueue.top();
+    printQueue.pop();
+
+    // Имитация времени печати
+    std::this_thread::sleep_for(std::chrono::milliseconds(500 + (2 - currentJob.priority) * 200));
+
+    currentJob.completionTime = std::chrono::system_clock::now();
+    printHistory.push_back(currentJob);
+    std::cout << "Задача от клиента " << currentJob.clientId << " (приоритет " << currentJob.priority << ") завершена.\n";
+}
+
+
+ std::cout << "\nСтатистика печати:\n";
+    for (const auto& job : printHistory) {
+        auto submissionTime = job.submissionTime;
+        auto completionTime = job.completionTime;
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(completionTime - submissionTime);
+        std::time_t submission_time_c = std::chrono::system_clock::to_time_t(submissionTime);
+        std::time_t completion_time_c = std::chrono::system_clock::to_time_t(completionTime);
+
+        char submissionTimeBuffer[80]; 
+        char completionTimeBuffer[80]; 
+        ctime_s(submissionTimeBuffer, sizeof(submissionTimeBuffer), &submission_time_c);
+        ctime_s(completionTimeBuffer, sizeof(completionTimeBuffer), &completion_time_c);
+
+
+        std::cout << "Клиент: " << job.clientId << ", Приоритет: " << job.priority
+                  << ", Время отправки: " << submissionTimeBuffer
+                  << ", Время завершения: " << completionTimeBuffer
+                  << ", Время печати: " << duration.count() << " мс\n";
+    }
+
+    return 0;
+
 }
